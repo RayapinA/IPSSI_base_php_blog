@@ -1,0 +1,34 @@
+###############################################################################
+#                        Voici l'environnement de travail commun                        #
+###############################################################################
+version: "3.3"
+services:
+
+    mariadb:
+      image: mariadb:latest
+      container_name: rayapin-db
+      volumes:
+        - .:/application
+      environment:
+        - MYSQL_PASSWORD=commonPass
+        - MYSQL_ROOT_PASSWORD=yourPass
+        - MYSQL_DATABASE=Dm_blog
+        - MYSQL_USER=project_
+        
+      ports:
+        - "3333:3306"
+
+    php:
+      build: ./php
+      ports:
+       - "30000:80"
+      volumes:
+        - ./DM_BLOG_PHP:/var/www/html
+
+    adminer:
+      image: adminer:latest
+      restart: always
+      ports:
+        - 5000:8080
+      links:
+      - mariadb
